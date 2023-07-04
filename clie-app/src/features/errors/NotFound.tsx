@@ -12,7 +12,6 @@ export default function NotFound() {
                 <Button as={Link} to='activities'>
                     Return to activities page
                 </Button>
-
             </Segment.Inline>
         </Segment>
     )

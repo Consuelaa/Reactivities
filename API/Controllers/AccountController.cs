@@ -12,36 +12,37 @@ using Microsoft.EntityFrameworkCore;
 */
 namespace API.Controllers
 {
-    //[AllowAnonymous]
+    [AllowAnonymous]
     [ApiController]
-    [Route("api/controller")]
+    [Route("api/[controller]")]
     public class AccountController :  ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
         {
-            _tokenService = tokenService;
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user= await _userManager.FindByEmailAsync(loginDto.Email);//give us a user
+            var user = await _userManager.FindByEmailAsync(loginDto.Email!);
 
-            if(user == null) return Unauthorized();
+            if (user == null) return Unauthorized();
 
-            var result= await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password!);
 
             if (result)
             {
-                return CreateUserObject(user);
-
+                  return CreateUserObject(user);
             }
+
             return Unauthorized();
         }
+
 
         [AllowAnonymous]
         [HttpPost("register")]
@@ -64,12 +65,11 @@ namespace API.Controllers
                 UserName = registerDto.Username
             };
 
-            var result= await _userManager.CreateAsync(user, registerDto.Password);
+            var result= await _userManager.CreateAsync(user, registerDto.Password!);
 
             if (result.Succeeded)
             {
                return CreateUserObject(user);
-
             }
 
             return BadRequest(result.Errors);
@@ -80,8 +80,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-            return CreateUserObject(user);
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email)!);
+            return CreateUserObject(user!);
         }
 
           private UserDto CreateUserObject (AppUser user)

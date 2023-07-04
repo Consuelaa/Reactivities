@@ -14,7 +14,6 @@ export default observer (function ServerError() {
             <code style={{marginTop:'10px'}}>{commonStore.error.details}</code>
                 </Segment>
             )}
-
         </Container>
     )
 })

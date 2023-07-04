@@ -6,18 +6,16 @@ import { useStore } from '../../../app/stores/store';
 import ActtivityFilters from './ActivityFilters';
 import ActivityList from './ActivityList';
 
-
-
 export default observer (function ActivityDashboard(){  // <=> props:Props
 const {activityStore} = useStore();
 const {loadActivities, activityRegistry} = activityStore;
 
   useEffect(() => {
     if (activityRegistry.size <=1)  loadActivities();
-  }, [loadActivities])
+  }, [loadActivities, activityRegistry.size])
 
 
-if(activityStore.loadingInitial) return <LoadingComponent content='Loading app'/>
+if(activityStore.loadingInitial) return <LoadingComponent content='Loading activities...'/>
 
     return(
         <Grid>

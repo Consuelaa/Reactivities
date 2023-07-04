@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -37,7 +33,7 @@ namespace Application.Activities
             {
                 _context.Activities.Add(request.Activity);
 
-               var result=await _context.SaveChangesAsync()>0;
+               var result = await _context.SaveChangesAsync() > 0;
 
                if (!result) return Result<Unit>.Failure("Failed to create activity");
 

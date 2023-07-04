@@ -2,14 +2,13 @@ using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Persistence;
 
 namespace Application.Activities
 {
     public class List
     {//mediator:
-        public class Query : IRequest<Result<List<Activity>>> {}
+        public class Query : IRequest<Result<List<Activity>>> { }
 
         public class Handler : IRequestHandler<Query, Result<List<Activity>>>
         {
@@ -17,8 +16,7 @@ namespace Application.Activities
 
            public Handler(DataContext context)
             {
-            _context = context;
-                 
+                 _context = context;
             }
            public async Task<Result<List<Activity>>>Handle(Query request, CancellationToken token)
             {

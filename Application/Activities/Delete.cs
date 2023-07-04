@@ -1,4 +1,3 @@
-using System;
 using Application.Core;
 using MediatR;
 using Persistence;
@@ -20,7 +19,7 @@ namespace Application.Activities
                  _context = context;
             }
 
-            public async Task<Result<Unit>>Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activity = await _context.Activities.FindAsync(request.Id);
 
@@ -28,7 +27,7 @@ namespace Application.Activities
 
                 _context.Remove(activity);
 
-                var result=await _context.SaveChangesAsync()>0;
+                var result = await _context.SaveChangesAsync() > 0;
 
                 if (!result) return Result<Unit>.Failure("Failed to delete");
 
