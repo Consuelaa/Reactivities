@@ -17,7 +17,7 @@ const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
-    if(token && config.headers) config.headers.Authorization= `Bearer ${token}`;
+    if(token && config.headers) config.headers.Authorization = `Bearer ${token}`;
     return config;
 })
 
