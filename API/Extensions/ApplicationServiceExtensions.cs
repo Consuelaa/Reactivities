@@ -1,3 +1,4 @@
+using System.Reflection;
 using Application.Activities;
 using Application.Core;
 using Application.Interfaces;
@@ -23,7 +24,8 @@ namespace API.Extensions
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-            });
+            }); 
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
@@ -37,6 +39,7 @@ namespace API.Extensions
             });
 
             services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<Create>();

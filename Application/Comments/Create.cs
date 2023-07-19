@@ -25,27 +25,31 @@ namespace Application.Comments
             }
         }
 
-
         public class Handler : IRequestHandler<Command, Result<CommentDto>>
         {
-            private readonly IUserAccessor _userAccessor;
-            private readonly IMapper _mapper;
             private readonly DataContext _context;
+            private readonly IMapper _mapper;
+            private readonly IUserAccessor _userAccessor;
+
             public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
-                _mapper = mapper;
-                _context = context;
                 _userAccessor = userAccessor;
+                _context = context;
+                _mapper = mapper;
             }
 
             public async Task<Result<CommentDto>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.ActivityId);
+                var activity = await _context.Activities
+                    .Include(x => x.Comments)
+                    .ThenInclude(x => x.Author)
+                    .ThenInclude(x => x.Photos)
+                    .FirstOrDefaultAsync(x => x.Id == request.ActivityId);
+
 
                 if (activity == null) return null;
 
                 var user = await _context.Users
-                    .Include(p => p.Photos)
                     .SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
 
                 var comment = new Comment
@@ -58,10 +62,10 @@ namespace Application.Comments
                 activity.Comments.Add(comment);
 
                 var success = await _context.SaveChangesAsync() > 0;
+
                 if (success) return Result<CommentDto>.Success(_mapper.Map<CommentDto>(comment));
 
                 return Result<CommentDto>.Failure("Failed to add comment");
-
             }
         }
     }

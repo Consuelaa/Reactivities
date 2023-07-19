@@ -1,10 +1,7 @@
-using System.Reflection;
 using API.Extensions;
 using API.Middleware;
 using API.SignalR;
-using Application.Activities;
 using Domain;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
