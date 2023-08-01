@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 */
 namespace API.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController :  ControllerBase
@@ -21,11 +20,11 @@ namespace API.Controllers
         private readonly TokenService _tokenService;
         public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
         {
-            _userManager = userManager;
             _tokenService = tokenService;
+            _userManager = userManager;
         }
 
-        
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
@@ -44,21 +43,22 @@ namespace API.Controllers
             return Unauthorized();
         }
 
-
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
-            {
-                ModelState.AddModelError("email", "Email taken");
-                return ValidationProblem();
-            }
-
-
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
             {
                ModelState.AddModelError("username", "Username taken");
                return ValidationProblem();
+            }
+
+
+
+            if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
+            {
+                ModelState.AddModelError("email", "Email taken");
+                return ValidationProblem();
             }
 
 
@@ -86,6 +86,8 @@ namespace API.Controllers
         {
            var user = await _userManager.Users.Include(p => p.Photos)
                 .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
+                
             return CreateUserObject(user!);
         }
 

@@ -25,7 +25,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
-/*app.UseXContentTypeOptions();
+app.UseXContentTypeOptions();
 app.UseReferrerPolicy(opt => opt.NoReferrer());
 app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
 app.UseXfo(opt => opt.Deny());
@@ -37,7 +37,7 @@ app.UseCsp(opt => opt
     .FrameAncestors(s => s.Self())
     .ImageSources(s => s.Self().CustomSources("blob:", "https://res.cloudinary.com", "https://platform-lookaside.fbsbx.com"))
     .ScriptSources(s => s.Self())
-);*/
+);
 
 if (app.Environment.IsDevelopment())
 {

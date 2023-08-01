@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Core;
 using Application.Interfaces;
 using MediatR;
@@ -33,8 +29,6 @@ namespace Application.Photos
                 var user = await _context.Users
                     .Include(p => p.Photos)
                     .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
-
-                if(user == null) return null;    
 
                 var photo = user.Photos.FirstOrDefault(x => x.Id == request.Id);
 
