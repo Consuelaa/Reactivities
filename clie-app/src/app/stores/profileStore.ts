@@ -74,7 +74,8 @@ export default class ProfileStore {
                 this.uploading = false;
             })
         } catch (error) {
-            console.log(error);
+           // console.log(error);
+            toast.error('A apărut o eroare la încărcarea fotografiei. Vă rugăm să încercați din nou.');
             runInAction(() => this.uploading = false);
         }
     }

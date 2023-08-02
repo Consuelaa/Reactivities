@@ -2,6 +2,7 @@ using API.Extensions;
 using API.Middleware;
 using API.SignalR;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -19,6 +20,8 @@ builder.Services.AddControllers(opt =>
 });
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddMediatR(typeof(Program).Assembly);
+
 
 var app = builder.Build();
 
